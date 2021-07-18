@@ -97,16 +97,17 @@ class ProductReview(View):
             return JsonResponse({'MESSAGE':'KEYERROR'}, status=400)
 
 class SearchView(View):
-    def post(self, request):
+    def get(self, request):
         try:
-            page        = int(request.GET.get('page', 1))
             PAGE_SIZE   = 24
-            limit       = int(PAGE_SIZE * page)
-            offset      = int(limit - PAGE_SIZE)
+            limit       = int(request.GET.get('limit', PAGE_SIZE))
+            offset      = int(request.GET.get('offset', 0))
+            word        = request.GET.get('keyword', None)
 
-            word        = request.GET.get('word', None)
-            search_list = Product.objects.filter(Q(name__icontains=word) | Q(description__icontains=word)).annotate(review_count=Count('review')).order_by('-review_count')[offset:limit]
+            search_list = Product.objects.filter(Q(name__icontains=word) | Q(description__icontains=word)) \
+            .annotate(review_count=Count('review')).order_by('-review_count')[offset:limit]
             context     = [{
+                'id'             :search.id,
                 'name'           :search.name,
                 'price'          :search.price,
                 'main_image_url' :search.main_image_url,
