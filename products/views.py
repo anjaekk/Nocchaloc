@@ -102,9 +102,9 @@ class SearchView(View):
             PAGE_SIZE   = 24
             limit       = int(request.GET.get('limit', PAGE_SIZE))
             offset      = int(request.GET.get('offset', 0))
-            word        = request.GET.get('keyword', None)
+            keyword     = request.GET.get('keyword', None)
 
-            search_list = Product.objects.filter(Q(name__icontains=word) | Q(description__icontains=word)) \
+            search_list = Product.objects.filter(Q(name__icontains=keyword) | Q(description__icontains=keyword)) \
             .annotate(review_count=Count('review')).order_by('-review_count')[offset:limit]
             context     = [{
                 'id'             :search.id,
@@ -114,7 +114,7 @@ class SearchView(View):
                 'hover_image_url':search.hover_image_url
             } for search in search_list]
 
-            return JsonResponse({'search_list':context, 'search_word':word}, status = 200)
+            return JsonResponse({'search_list':context, 'search_word':keyword}, status = 200)
         except KeyError:
             return JsonResponse({'message':'KEY_ERROR'}, status=400)
         except TypeError:
