@@ -122,12 +122,14 @@
 </div>
 </details>
 
+
+
 <details>
+<summary>제품 검색기능 구현</summary>
+<div markdown="2">
 
-
-<summary>제품 검색</summary>
-<div markdown="2">       
 - 이름과 제품 설명에서 검색 후 review순으로 정렬
+
 ```
 '''(생략)
 def get(self, request):
@@ -151,6 +153,7 @@ def get(self, request):
 
 </div>
 </details>
+
 
 ## 📍 전체 구현 기능
 |User(회원가입 및 로그인)|Product(제품 리스트 및 리뷰)|Order(장바구니 및 결제)|
